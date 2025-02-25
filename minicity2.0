@@ -1,0 +1,121 @@
+-- Import necessary services
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+local ChatService = game:GetService("Chat")
+local Player = Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local RunService = game:GetService("RunService")
+
+-- Credits
+print("✅ Script created by Sacola e THVEZEIRA")
+
+-- Initialize variables
+local flySpeed = 50
+local espNamesEnabled = false
+local espPlayersEnabled = false
+local noClipEnabled = false
+local hitboxEnabled = false
+local autoClEnabled = false
+local teleportToPlayerEnabled = false
+local antiExploitEnabled = true
+local menuVisible = false
+local key = "123"
+
+-- Other functionality-related variables from the previous script
+local functions = {
+    speedBoost = false,
+    espNames = false,
+    espPlayers = false,
+    noClip = false,
+    hitbox = false,
+    autoCL = false,
+    teleportToPlayer = false
+}
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.ResetOnSpawn = false
+ScreenGui.DisplayOrder = 9999
+
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(1, 0, 0, 0.6)
+MainFrame.Position = UDim2.new(0.5, 0, 0.2, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainFrame.Visible = menuVisible
+
+local CreditsLabel = Instance.new("TextLabel", MainFrame)
+CreditsLabel.Size = UDim2.new(1, 0, 0, 30)
+CreditsLabel.Position = UDim2.new(0, 0, 1, 0)
+CreditsLabel.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+CreditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+CreditsLabel.Text = "SONIC MENU PAGO\nCreditos: SACOLA e THVEZEIRA"
+CreditsLabel.TextScaled = true
+CreditsLabel.Font = Enum.Font.SourceSansBold
+
+local ToggleButton = Instance.new("TextButton", MainFrame)
+ToggleButton.Size = UDim2.new(1, 0, 0, 0.1)
+ToggleButton.Position = UDim2.new(0, 0, 0.2, 0)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Text = "Ativar Desativar Menu (Vermelho: Desativado, Verde: Ativado)"
+ToggleButton.FontSize = Enum.FontSize.Size14
+
+-- Other GUI elements from the previous script
+-- ...
+
+-- Create Menu Buttons (combined functionality)
+local function createButton(name, position, funcName)
+    local button = Instance.new("TextButton", MainFrame)
+    button.Size = UDim2.new(1, 0, 0, 0.1)
+    button.Position = UDim2.new(0, 0, position, 0)
+    button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Text = name
+    button.FontSize = Enum.FontSize.Size14
+
+    button.MouseButton1Click:Connect(function()
+        if funcName == "toggleMenu" then
+            menuVisible = not menuVisible
+            MainFrame.Visible = menuVisible
+        elseif funcName == "toggleFly" then
+            if noClipEnabled then
+                return
+            end
+
+            noClipEnabled = not noClipEnabled
+
+            if noClipEnabled then
+                button.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+                button.TextColor3 = Color3.fromRGB(255, 255, 255)
+                button.Text = "Ativar Desativar Fly (Vermelho: Desativado, Verde: Ativado)"
+                toggleFly()
+            else
+                button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+                button.TextColor3 = Color3.fromRGB(255, 255, 255)
+                button.Text = "Ativar Desativar Fly (Vermelho: Desativado, Verde: Ativado)"
+            end
+        -- Add other functionality-related event connections here
+        end
+    end)
+end
+
+createButton("Ativar Desativar Menu (Vermelho: Desativado, Verde: Ativado)", 0.2, "toggleMenu")
+createButton("Ativar Desativar Fly (Vermelho: Desativado, Verde: Ativado)", 0.3, "toggleFly")
+-- Create other buttons with their corresponding functionality
+
+-- Other functionality-related code (e.g., toggleFly(), noClip(), etc.)
+-- ...
+
+-- Event binding for key input and touch input detection (combined functionality)
+local touchInput = game:GetService("UserInputService").Touch
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == KeyCode[key] then
+            toggleMenu()
+        elseif input.UserInputType == Enum.UserInputType.Touch then
+            toggleMenu()
+        end
+    end
+end)
